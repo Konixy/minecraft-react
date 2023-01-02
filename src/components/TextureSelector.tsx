@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useStore } from '../hooks/useStore';
 import { useKeyboard } from '../hooks/useKeyboard';
 import * as textures from '../images/images';
 import { Texture } from './Cube';
 
-const images = {
+export const images = {
   dirt: textures.dirtImg,
   grass: textures.grassImg,
   glass: textures.glassImg,
@@ -31,9 +31,10 @@ export const TextureSelector = () => {
   useEffect(() => {
     const textures = { dirt, grass, glass, wood, log };
 
-    const pressedTexture: [Texture, boolean] | undefined = Object.entries(textures).find(
-      ([k, v]: [Texture, boolean]) => v,
-    );
+    const pressedTexture: [Texture, boolean] | undefined = Object.entries(textures).find(([, v]) => v) as [
+      Texture,
+      boolean,
+    ];
 
     if (pressedTexture) setTexture(pressedTexture[0]);
   }, [dirt, grass, glass, wood, log]);

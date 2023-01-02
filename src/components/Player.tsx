@@ -1,7 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+/* eslint-disable react/no-unknown-property */
+import React, { Ref, useEffect, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import { useSphere } from '@react-three/cannon';
-import { Vector3 } from 'three';
+// eslint-disable-next-line import/named
+import { useBox } from '@react-three/cannon';
+import { BufferGeometry, Material, Mesh, Vector3 } from 'three';
 import { useKeyboard } from '../hooks/useKeyboard';
 
 const JUMP_FORCE = 3;
@@ -11,7 +13,7 @@ export const Player = () => {
   const actions = useKeyboard();
 
   const { camera, scene } = useThree();
-  const [ref, api] = useSphere(() => ({
+  const [ref, api] = useBox(() => ({
     mass: 1,
     type: 'Dynamic',
     position: [0, 0.5, 0],
@@ -48,5 +50,13 @@ export const Player = () => {
   ref.current?.lookAt(camera.position);
   scene.add(camera);
 
-  return <mesh ref={ref as unknown as React.RefObject<React.ReactNode>}></mesh>;
+  return (
+    <mesh
+      // scale={[1, 1, 1]}
+      ref={ref as unknown as Ref<Mesh<BufferGeometry, Material | Material[]>>}
+    >
+      <boxBufferGeometry attach="geometry" args={[1, 2]} />
+      <meshStandardMaterial transparent={false} color={'green'} opacity={0} attach="material" />
+    </mesh>
+  );
 };

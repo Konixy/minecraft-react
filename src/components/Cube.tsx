@@ -4,17 +4,15 @@ import React, { useState } from 'react';
 import { useBox } from '@react-three/cannon';
 import * as textures from '../images/textures';
 import { useStore } from '../hooks/useStore';
-import { TextureLoader } from 'three';
-import glassAlphaMap from '../images/textures/blocks/glass_alphamap.jpg';
-import { useThree } from '@react-three/fiber';
+import { BufferGeometry, Material, Mesh } from 'three';
 
 export type Triplet = [x: number, y: number, z: number];
 export type Texture = 'dirt' | 'grass' | 'glass' | 'wood' | 'log';
 export type TextureName = `${Texture}Texture`;
 
 export const Cube = ({ position, texture }: { position: Triplet | undefined; texture: Texture }) => {
-  const three = useThree();
-  const [activeTexture, setActiveTexture] = useState(textures[(texture + 'Texture') as TextureName]);
+  const activeTexture = textures[(texture + 'Texture') as TextureName];
+  const [hovered, setIsHovered] = useState(false);
 
   const [ref] = useBox(() => ({
     type: 'Static',
@@ -25,7 +23,8 @@ export const Cube = ({ position, texture }: { position: Triplet | undefined; tex
 
   return (
     <mesh
-      ref={ref as unknown as React.RefObject<React.ReactNode>}
+      castShadow
+      ref={ref as unknown as React.Ref<Mesh<BufferGeometry, Material | Material[]>>}
       onClick={(e) => {
         e.stopPropagation();
         if (e.faceIndex) {
@@ -46,20 +45,19 @@ export const Cube = ({ position, texture }: { position: Triplet | undefined; tex
       }}
       onPointerEnter={async (e) => {
         e.stopPropagation();
+        setIsHovered(true);
         // setActiveTexture(new TextureLoader().load(hoverTexture));
       }}
-      onPointerLeave={(e) => {
-        setActiveTexture(textures[(texture + 'Texture') as TextureName]);
+      onPointerLeave={() => {
+        setIsHovered(false);
       }}
     >
       <boxBufferGeometry attach="geometry" args={[1, 1]} />
       <meshStandardMaterial
         map={activeTexture}
         transparent={true}
-        opacity={1}
-        alphaMap={texture === 'glass' ? new TextureLoader().load(glassAlphaMap) : undefined}
-        // alphaMap={activeTexture}
-        // alphaTest={1}
+        opacity={texture === 'glass' ? 0.8 : 1}
+        color={hovered ? 'gray' : 'white'}
         attach="material"
       />
     </mesh>

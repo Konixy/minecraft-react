@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 import React from 'react';
 import { usePlane } from '@react-three/cannon';
-import { groundTexture } from '../images/textures';
+import { grassTexture } from '../images/textures';
 import { useStore } from '../hooks/useStore';
 
 export const Ground = () => {
@@ -12,7 +12,7 @@ export const Ground = () => {
 
   const [addCube] = useStore((state) => [state.addCube]);
 
-  groundTexture.repeat.set(100, 100);
+  grassTexture.repeat.set(100, 100);
 
   return (
     <mesh
@@ -24,7 +24,7 @@ export const Ground = () => {
       ref={ref as unknown as React.RefObject<React.ReactNode>}
     >
       <planeBufferGeometry attach="geometry" args={[100, 100]} />
-      <meshStandardMaterial attach="material" map={groundTexture} />
+      <meshStandardMaterial attach="material" map={grassTexture} />
     </mesh>
   );
 };
