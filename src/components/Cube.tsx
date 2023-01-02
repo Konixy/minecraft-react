@@ -9,7 +9,7 @@ import glassAlphaMap from '../images/textures/blocks/glass_alphamap.jpg';
 import { useThree } from '@react-three/fiber';
 
 export type Triplet = [x: number, y: number, z: number];
-export type Texture = 'dirt' | 'ground' | 'glass' | 'wood' | 'log';
+export type Texture = 'dirt' | 'grass' | 'glass' | 'wood' | 'log';
 export type TextureName = `${Texture}Texture`;
 
 export const Cube = ({ position, texture }: { position: Triplet | undefined; texture: Texture }) => {

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useStore } from '../hooks/useStore';
 import { useKeyboard } from '../hooks/useKeyboard';
 import * as textures from '../images/images';
+import { Texture } from './Cube';
 
 const images = {
   dirt: textures.dirtImg,
@@ -21,13 +22,18 @@ function HotbarSelected() {
 }
 
 export const TextureSelector = () => {
-  const [activeTexture, setTexture] = useStore((state) => [state.texture, state.setTexture]);
+  const [activeTexture, setTexture] = useStore<[Texture, (texture: Texture) => void]>((state) => [
+    state.texture,
+    state.setTexture,
+  ]);
   const { dirt, grass, glass, wood, log } = useKeyboard();
 
   useEffect(() => {
     const textures = { dirt, grass, glass, wood, log };
 
-    const pressedTexture = Object.entries(textures).find(([k, v]) => v);
+    const pressedTexture: [Texture, boolean] | undefined = Object.entries(textures).find(
+      ([k, v]: [Texture, boolean]) => v,
+    );
 
     if (pressedTexture) setTexture(pressedTexture[0]);
   }, [dirt, grass, glass, wood, log]);
