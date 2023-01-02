@@ -3,6 +3,7 @@ import React from 'react';
 import { usePlane } from '@react-three/cannon';
 import { grassTexture } from '../images/textures';
 import { useStore } from '../hooks/useStore';
+import { Mesh, BufferGeometry, Material } from 'three';
 
 export const Ground = () => {
   const [ref] = usePlane(() => ({
@@ -21,7 +22,7 @@ export const Ground = () => {
         const [x, y, z] = Object.values(e.point).map((val) => Math.ceil(val));
         addCube(x, y, z);
       }}
-      ref={ref as unknown as React.RefObject<React.ReactNode>}
+      ref={ref as unknown as React.Ref<Mesh<BufferGeometry, Material | Material[]>>}
     >
       <planeBufferGeometry attach="geometry" args={[100, 100]} />
       <meshStandardMaterial attach="material" map={grassTexture} />
