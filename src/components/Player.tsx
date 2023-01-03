@@ -1,36 +1,32 @@
 /* eslint-disable react/no-unknown-property */
-import React, { Ref, useEffect, useRef } from 'react';
+import React, { Ref, useRef } from 'react';
+import * as RAPIER from '@dimforge/rapier3d-compat';
 import { useFrame, useThree } from '@react-three/fiber';
 // eslint-disable-next-line import/named
-import { useBox } from '@react-three/cannon';
-import { BufferGeometry, Material, Mesh, Vector3 } from 'three';
+import { Vector3 } from 'three';
 import { useKeyboard } from '../hooks/useKeyboard';
+// eslint-disable-next-line import/named
+import { CylinderCollider, RigidBody, RigidBodyApi, useRapier } from '@react-three/rapier';
 
 const JUMP_FORCE = 3;
 const SPEED = 4;
 
+let velocity: Vector3 | undefined;
+export let position: Vector3 | undefined = new Vector3(0, 2, 0);
+
 export const Player = () => {
   const actions = useKeyboard();
 
-  const { camera, scene } = useThree();
-  const [ref, api] = useBox(() => ({
-    mass: 1,
-    type: 'Dynamic',
-    position: [0, 0.5, 0],
-  }));
+  const rapier = useRapier();
 
-  const vel = useRef([0, 0, 0]);
-  useEffect(() => {
-    api.velocity.subscribe((v) => (vel.current = v));
-  }, [api.velocity]);
+  const { camera } = useThree();
+  const ref = useRef<RigidBodyApi>();
 
-  const pos = useRef([0, 0, 0]);
-  useEffect(() => {
-    api.position.subscribe((p) => (pos.current = p));
-  }, [api.position]);
+  useFrame((state) => {
+    velocity = ref.current?.linvel();
+    position = ref.current?.translation();
 
-  useFrame(() => {
-    camera.position.copy(new Vector3(pos.current[0], pos.current[1], pos.current[2]));
+    state.camera.position.set(...ref.current?.translation());
 
     const direction = new Vector3();
 
@@ -40,23 +36,42 @@ export const Player = () => {
 
     direction.subVectors(frontVector, sideVector).normalize().multiplyScalar(SPEED).applyEuler(camera.rotation);
 
-    api.velocity.set(direction.x, vel.current[1], direction.z);
+    ref.current?.setLinvel(new Vector3(direction.x, velocity?.y, direction.z));
 
-    if (actions.jump && Math.abs(vel.current[1]) < 0.05) {
-      api.velocity.set(vel.current[0], JUMP_FORCE, vel.current[2]);
+    const world = rapier.world.raw();
+    const ray = world.castRay(
+      new RAPIER.Ray(ref.current?.translation() as Vector3, { x: 0, y: -1, z: 0 }),
+      10000,
+      true,
+    );
+    const grounded = ray && ray.collider && Math.abs(ray.toi) <= 1.75;
+
+    if (grounded && actions.jump) {
+      // && Math.abs(vel.current[1]) < 0.05
+      ref.current?.setLinvel(new Vector3(velocity?.x, JUMP_FORCE, velocity?.z));
     }
   });
 
-  ref.current?.lookAt(camera.position);
-  scene.add(camera);
+  // ref.current?.lookAt(camera.position);
+  // scene.add(camera);
 
   return (
-    <mesh
-      // scale={[1, 1, 1]}
-      ref={ref as unknown as Ref<Mesh<BufferGeometry, Material | Material[]>>}
+    // <mesh
+    //   // scale={[1, 1, 1]}
+    //   ref={ref as unknown as Ref<Mesh<BufferGeometry, Material | Material[]>>}
+    // >
+    //   <boxBufferGeometry attach="geometry" args={[1, 2]} />
+    //   <meshStandardMaterial transparent={false} color={'green'} opacity={0} attach="material" />
+    // </mesh>
+    <RigidBody
+      ref={ref as Ref<RigidBodyApi>}
+      colliders="cuboid"
+      mass={1}
+      type="dynamic"
+      position={position}
+      enabledRotations={[false, false, false]}
     >
-      <boxBufferGeometry attach="geometry" args={[1, 2]} />
-      <meshStandardMaterial transparent={false} color={'green'} opacity={0} attach="material" />
-    </mesh>
+      <CylinderCollider args={[0.95, 0.1]} />
+    </RigidBody>
   );
 };

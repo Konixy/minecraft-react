@@ -1,31 +1,33 @@
 /* eslint-disable react/no-unknown-property */
-import React from 'react';
-import { usePlane } from '@react-three/cannon';
+import React, { FC } from 'react';
+import { CuboidCollider, RigidBody } from '@react-three/rapier';
 import { grassTexture } from '../images/textures';
 import { useStore } from '../hooks/useStore';
-import { Mesh, BufferGeometry, Material } from 'three';
+import { RepeatWrapping } from 'three';
 
-export const Ground = () => {
-  const [ref] = usePlane(() => ({
-    rotation: [-Math.PI / 2, 0, 0],
-    position: [0, -0.5, 0],
-  }));
-
+export const Ground: FC = () => {
   const [addCube] = useStore((state) => [state.addCube]);
 
+  grassTexture.wrapS = RepeatWrapping;
+  grassTexture.wrapT = RepeatWrapping;
   grassTexture.repeat.set(100, 100);
 
   return (
-    <mesh
-      onClick={(e) => {
-        e.stopPropagation();
-        const [x, y, z] = Object.values(e.point).map((val) => Math.ceil(val));
-        addCube(x, y, z);
-      }}
-      ref={ref as unknown as React.Ref<Mesh<BufferGeometry, Material | Material[]>>}
-    >
-      <planeBufferGeometry attach="geometry" args={[100, 100]} />
-      <meshStandardMaterial attach="material" map={grassTexture} />
-    </mesh>
+    <RigidBody type="fixed">
+      <mesh
+        position={[0, 0.5, 0]}
+        rotation-x={-Math.PI / 2}
+        receiveShadow
+        onClick={(e) => {
+          e.stopPropagation();
+          const [x, y, z] = Object.values(e.point).map((val) => Math.ceil(val));
+          addCube(x, y, z);
+        }}
+      >
+        <planeBufferGeometry attach="geometry" args={[100, 100]} />
+        <meshStandardMaterial attach="material" map={grassTexture} />
+      </mesh>
+      <CuboidCollider args={[1000, 2, 1000]} position={[0, -2, 0]} />
+    </RigidBody>
   );
 };

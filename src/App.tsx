@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import { Sky } from '@react-three/drei/core/Sky';
-import { Physics } from '@react-three/cannon';
+import { Physics } from '@react-three/rapier';
 import { Ground } from './components/Ground';
 import { Player } from './components/Player';
 import { Cubes } from './components/Cubes';
@@ -21,7 +21,10 @@ function FPV({
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const controlsRef = useRef<PointerLockControlsProps & PointerLockControls>();
-  const { camera, gl } = useThree();
+  const { camera, gl, setSize, size } = useThree();
+  useEffect(() => {
+    setSize(window.innerWidth, window.innerHeight);
+  }, [window.innerWidth, window.innerHeight]);
   return (
     <PointerLockControls
       args={[camera, gl.domElement]}
@@ -49,7 +52,7 @@ const app = () => {
   const [isMenuDisplayed, setIsMenuDisplayed] = useState(true);
   return (
     <>
-      <Canvas>
+      <Canvas shadows>
         <App isLocked={isLocked} setIsMenuDisplayed={setIsMenuDisplayed} />;
       </Canvas>
       <TextureSelector />
@@ -85,9 +88,9 @@ function App({
       {/* eslint-disable-next-line react/no-unknown-property */}
       <ambientLight intensity={0.25} />
       <pointLight castShadow intensity={0.7} position={[100, 100, 100]} />
-      <Physics>
+      <Physics gravity={[0, -30, 0]}>
         <Player />
-        <Ground />
+        {/* <Ground /> */}
         <Cubes />
         <FPV isLocked={isLocked} setIsMenuDisplayed={setIsMenuDisplayed} />
       </Physics>
