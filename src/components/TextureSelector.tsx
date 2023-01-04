@@ -12,12 +12,21 @@ export const images = {
   log: textures.logImg,
 };
 
-function HotbarSelected() {
+function HotbarItem({ selected, textureName }: { selected: boolean; textureName: Texture }) {
   return (
     <div
-      className="absolute ml-[-12px] mt-[-12px] h-[58px] w-[58px] bg-cover"
-      style={{ backgroundImage: `url("src/images/hotbar_selected.png")` }}
-    ></div>
+      className="mr-[13.1px] h-[35px] w-[35px] bg-cover rendering-pixelated last:mr-0"
+      style={{ backgroundImage: `url("src/images/textures/items/${textureName}.item.png")` }}
+    >
+      {selected ? (
+        <div
+          className="absolute ml-[-12px] mt-[-12px] h-[58px] w-[58px] bg-cover"
+          style={{ backgroundImage: `url("src/images/hotbar_selected.png")` }}
+        ></div>
+      ) : (
+        ''
+      )}
+    </div>
   );
 }
 
@@ -27,6 +36,7 @@ export const TextureSelector = () => {
     state.setTexture,
   ]);
   const { dirt, grass, glass, wood, log } = useKeyboard();
+  const hotbar = new Array(9).fill(null);
 
   useEffect(() => {
     const textures = { dirt, grass, glass, wood, log };
@@ -53,26 +63,11 @@ export const TextureSelector = () => {
         className="flex h-[52.8px] w-[440px] flex-row items-center justify-center bg-cover bg-no-repeat rendering-pixelated"
         style={{ backgroundImage: `url("src/images/hotbar.png")` }}
       >
-        <div
-          className={itemClassName}
-          style={{
-            backgroundImage: `url("src/images/textures/items/dirt.item.png")`,
-          }}
-        >
-          {activeTexture === 'dirt' ? <HotbarSelected /> : ''}
-        </div>
-        <div className={itemClassName} style={{ backgroundImage: `url("src/images/textures/items/grass.item.png")` }}>
-          {activeTexture === 'grass' ? <HotbarSelected /> : ''}
-        </div>
-        <div className={itemClassName} style={{ backgroundImage: `url("src/images/textures/items/glass.item.png")` }}>
-          {activeTexture === 'glass' ? <HotbarSelected /> : ''}
-        </div>
-        <div className={itemClassName} style={{ backgroundImage: `url("src/images/textures/items/wood.item.png")` }}>
-          {activeTexture === 'wood' ? <HotbarSelected /> : ''}
-        </div>
-        <div className={itemClassName} style={{ backgroundImage: `url("src/images/textures/items/log.item.png")` }}>
-          {activeTexture === 'log' ? <HotbarSelected /> : ''}
-        </div>
+        <HotbarItem selected={activeTexture === 'dirt'} textureName={'dirt'} />
+        <HotbarItem selected={activeTexture === 'grass'} textureName={'grass'} />
+        <HotbarItem selected={activeTexture === 'glass'} textureName={'glass'} />
+        <HotbarItem selected={activeTexture === 'wood'} textureName={'wood'} />
+        <HotbarItem selected={activeTexture === 'log'} textureName={'log'} />
         <div className={itemClassName}></div>
         <div className={itemClassName}></div>
         <div className={itemClassName}></div>
