@@ -1,6 +1,20 @@
 import { useCallback, useEffect, useState } from 'react';
 
-type KeyActionMap = 'KeyW' | 'KeyS' | 'KeyA' | 'KeyD' | 'Space' | 'Digit1' | 'Digit2' | 'Digit3' | 'Digit4' | 'Digit5';
+type KeyActionMap =
+  | 'KeyW'
+  | 'KeyS'
+  | 'KeyA'
+  | 'KeyD'
+  | 'Space'
+  | 'Digit1'
+  | 'Digit2'
+  | 'Digit3'
+  | 'Digit4'
+  | 'Digit5'
+  | 'Digit6'
+  | 'Digit7'
+  | 'Digit8'
+  | 'Digit9';
 
 function actionByKey(key: KeyActionMap | string) {
   const keyActionMap = {
@@ -9,11 +23,15 @@ function actionByKey(key: KeyActionMap | string) {
     KeyA: 'moveLeft',
     KeyD: 'moveRight',
     Space: 'jump',
-    Digit1: 'dirt',
-    Digit2: 'grass',
-    Digit3: 'glass',
-    Digit4: 'wood',
-    Digit5: 'log',
+    Digit1: 'hotbar1',
+    Digit2: 'hotbar2',
+    Digit3: 'hotbar3',
+    Digit4: 'hotbar4',
+    Digit5: 'hotbar5',
+    Digit6: 'hotbar6',
+    Digit7: 'hotbar7',
+    Digit8: 'hotbar8',
+    Digit9: 'hotbar9',
   };
   return keyActionMap[key as KeyActionMap];
 }
@@ -25,11 +43,15 @@ export const useKeyboard = () => {
     moveLeft: false,
     moveRight: false,
     jump: false,
-    dirt: false,
-    grass: false,
-    glass: false,
-    wood: false,
-    log: false,
+    hotbar1: false,
+    hotbar2: false,
+    hotbar3: false,
+    hotbar4: false,
+    hotbar5: false,
+    hotbar6: false,
+    hotbar7: false,
+    hotbar8: false,
+    hotbar9: false,
   });
 
   const handleKeyDown = useCallback((e: unknown) => {

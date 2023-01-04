@@ -18,7 +18,7 @@ export const useStore = create((set) => ({
       }),
     }));
   },
-  setTexture: (texture: Texture) => {
+  setTexture: (texture: Texture | null) => {
     set(() => ({ texture }));
   },
   saveWorld: () => {},

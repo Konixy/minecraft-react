@@ -26,7 +26,8 @@ export const Player = () => {
     velocity = ref.current?.linvel();
     position = ref.current?.translation();
 
-    state.camera.position.set(...ref.current?.translation());
+    if (ref.current?.translation())
+      state.camera.position.set(ref.current.translation().x, ref.current.translation().y, ref.current.translation().z);
 
     const direction = new Vector3();
 
@@ -71,7 +72,7 @@ export const Player = () => {
       position={position}
       enabledRotations={[false, false, false]}
     >
-      <CylinderCollider args={[0.95, 0.1]} />
+      <CylinderCollider args={[0.95, 0.21]} />
     </RigidBody>
   );
 };

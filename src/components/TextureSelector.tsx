@@ -3,6 +3,7 @@ import { useStore } from '../hooks/useStore';
 import { useKeyboard } from '../hooks/useKeyboard';
 import * as textures from '../images/images';
 import { Texture } from './Cube';
+import useHotbar from '../hooks/useHotbar';
 
 export const images = {
   dirt: textures.dirtImg,
@@ -12,11 +13,11 @@ export const images = {
   log: textures.logImg,
 };
 
-function HotbarItem({ selected, textureName }: { selected: boolean; textureName: Texture }) {
+function HotbarItem({ selected, textureName }: { selected: boolean; textureName: Texture | null }) {
   return (
     <div
       className="mr-[13.1px] h-[35px] w-[35px] bg-cover rendering-pixelated last:mr-0"
-      style={{ backgroundImage: `url("src/images/textures/items/${textureName}.item.png")` }}
+      style={textureName ? { backgroundImage: `url("src/images/textures/items/${textureName}.item.png")` } : {}}
     >
       {selected ? (
         <div
@@ -31,23 +32,24 @@ function HotbarItem({ selected, textureName }: { selected: boolean; textureName:
 }
 
 export const TextureSelector = () => {
-  const [activeTexture, setTexture] = useStore<[Texture, (texture: Texture) => void]>((state) => [
+  const [activeTexture, setTexture] = useStore<[Texture | null, (texture: Texture | null) => void]>((state) => [
     state.texture,
     state.setTexture,
   ]);
-  const { dirt, grass, glass, wood, log } = useKeyboard();
-  const hotbar = new Array(9).fill(null);
+  const keys = useKeyboard();
+  const { active, setActive, hotbar } = useHotbar();
+  console.log(active);
 
   useEffect(() => {
-    const textures = { dirt, grass, glass, wood, log };
+    const textures = { keys };
 
-    const pressedTexture: [Texture, boolean] | undefined = Object.entries(textures).find(([, v]) => v) as [
-      Texture,
-      boolean,
-    ];
-
-    if (pressedTexture) setTexture(pressedTexture[0]);
-  }, [dirt, grass, glass, wood, log]);
+    const pressedTexture = Object.entries(textures).find(([, v]) => v);
+    if (pressedTexture) {
+      const index = Number(pressedTexture[0].split('')[6]);
+      setActive(index);
+      setTexture(active.texture);
+    }
+  }, [keys]);
 
   // return visible ? (
   //   <div className="centered absolute  text-3xl">
@@ -56,22 +58,15 @@ export const TextureSelector = () => {
   // ) : (
   //   <></>
   // );
-  const itemClassName = 'h-[35px] w-[35px] mr-[13.1px] bg-cover rendering-pixelated last:mr-0';
   return (
     <div className="absolute right-[50%] bottom-0 z-30 mb-10 translate-x-[50%]">
       <div
         className="flex h-[52.8px] w-[440px] flex-row items-center justify-center bg-cover bg-no-repeat rendering-pixelated"
         style={{ backgroundImage: `url("src/images/hotbar.png")` }}
       >
-        <HotbarItem selected={activeTexture === 'dirt'} textureName={'dirt'} />
-        <HotbarItem selected={activeTexture === 'grass'} textureName={'grass'} />
-        <HotbarItem selected={activeTexture === 'glass'} textureName={'glass'} />
-        <HotbarItem selected={activeTexture === 'wood'} textureName={'wood'} />
-        <HotbarItem selected={activeTexture === 'log'} textureName={'log'} />
-        <div className={itemClassName}></div>
-        <div className={itemClassName}></div>
-        <div className={itemClassName}></div>
-        <div className={itemClassName}></div>
+        {hotbar.map((e, index) => (
+          <HotbarItem key={index} selected={e.current} textureName={e.texture} />
+        ))}
       </div>
     </div>
   );
