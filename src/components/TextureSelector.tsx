@@ -38,7 +38,7 @@ export const TextureSelector = () => {
   ]);
   const keys = useKeyboard();
   const { active, setActive, hotbar } = useHotbar();
-  console.log(active);
+  // console.log(active);
 
   useEffect(() => {
     const textures = { keys };

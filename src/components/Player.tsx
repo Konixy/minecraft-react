@@ -12,7 +12,7 @@ const JUMP_FORCE = 3;
 const SPEED = 4;
 
 let velocity: Vector3 | undefined;
-export let position: Vector3 | undefined = new Vector3(0, 2, 0);
+export let position: Vector3 | undefined = new Vector3(0, 20, 0);
 
 export const Player = () => {
   const actions = useKeyboard();
@@ -67,7 +67,7 @@ export const Player = () => {
     <RigidBody
       ref={ref as Ref<RigidBodyApi>}
       colliders="cuboid"
-      mass={1}
+      mass={0} // 1
       type="dynamic"
       position={position}
       enabledRotations={[false, false, false]}

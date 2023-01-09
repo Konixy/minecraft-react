@@ -34,6 +34,7 @@ export default function useHotbar(): {
 
   let active = hotbar.filter((e) => e.current === true)[0];
   useEffect(() => {
+    // console.log(hotbar);
     active = hotbar.filter((e) => e.current === true)[0];
   }, [hotbar]);
 

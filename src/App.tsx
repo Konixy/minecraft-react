@@ -3,13 +3,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import { Sky } from '@react-three/drei/core/Sky';
 import { Physics } from '@react-three/rapier';
-import { Ground } from './components/Ground';
 import { Player } from './components/Player';
 import { Cubes } from './components/Cubes';
 import { TextureSelector } from './components/TextureSelector';
 // eslint-disable-next-line import/named
 import { PointerLockControls, PointerLockControlsProps } from '@react-three/drei/core/PointerLockControls';
 import { Menu } from './components/Menu';
+import { World } from './components/WorldGenerator';
 
 function FPV({
   isLocked,
