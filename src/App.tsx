@@ -9,7 +9,9 @@ import { TextureSelector } from './components/TextureSelector';
 // eslint-disable-next-line import/named
 import { PointerLockControls, PointerLockControlsProps } from '@react-three/drei/core/PointerLockControls';
 import { Menu } from './components/Menu';
-import { World } from './components/WorldGenerator';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import FPSStats from 'react-fps-stats';
 
 function FPV({
   isLocked,
@@ -21,7 +23,7 @@ function FPV({
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const controlsRef = useRef<PointerLockControlsProps & PointerLockControls>();
-  const { camera, gl, setSize, size } = useThree();
+  const { camera, gl, setSize } = useThree();
   useEffect(() => {
     setSize(window.innerWidth, window.innerHeight);
   }, [window.innerWidth, window.innerHeight]);
@@ -52,10 +54,11 @@ const app = () => {
   const [isMenuDisplayed, setIsMenuDisplayed] = useState(true);
   return (
     <>
-      <Canvas shadows>
+      <Canvas shadows onKeyDown={(e) => e.preventDefault()}>
         <App isLocked={isLocked} setIsMenuDisplayed={setIsMenuDisplayed} />;
       </Canvas>
       <TextureSelector />
+      <FPSStats />
       {!isMenuDisplayed ? (
         <div
           // eslint-disable-next-line tailwindcss/no-custom-classname

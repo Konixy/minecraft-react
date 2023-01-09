@@ -12,8 +12,8 @@ import { CubeMap } from '../hooks/useStore';
 import { nanoid } from 'nanoid';
 import { Texture, Triplet } from './Cube';
 
-const seed1 = 0;
-const seed2 = 0;
+const seed1 = Math.random();
+const seed2 = Math.random();
 const genE = createNoise2D(alea(seed1));
 const genM = createNoise2D(alea(seed2));
 
@@ -31,8 +31,8 @@ type Points = {
   y: number;
 }[];
 
-const height = 30;
-const width = 30;
+const height = 10;
+const width = 10;
 
 export function genPoints(): Points {
   const result: Points = [];

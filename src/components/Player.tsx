@@ -47,7 +47,7 @@ export const Player = () => {
     );
     const grounded = ray && ray.collider && Math.abs(ray.toi) <= 1.75;
 
-    if (grounded && actions.jump) {
+    if (actions.jump) {
       // && Math.abs(vel.current[1]) < 0.05
       ref.current?.setLinvel(new Vector3(velocity?.x, JUMP_FORCE, velocity?.z));
     }
@@ -67,7 +67,7 @@ export const Player = () => {
     <RigidBody
       ref={ref as Ref<RigidBodyApi>}
       colliders="cuboid"
-      mass={0} // 1
+      mass={1} // 1
       type="dynamic"
       position={position}
       enabledRotations={[false, false, false]}

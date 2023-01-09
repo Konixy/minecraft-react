@@ -40,17 +40,20 @@ export const TextureSelector = () => {
   const { active, setActive, hotbar } = useHotbar();
   // console.log(active);
 
-  useEffect(() => {
-    const textures = { keys };
+  // useEffect(() => {
+  //   const textures = { keys };
 
-    const pressedTexture = Object.entries(textures).find(([, v]) => v);
-    if (pressedTexture) {
-      const index = Number(pressedTexture[0].split('')[6]);
-      setActive(index);
-      setTexture(active.texture);
-    }
-  }, [keys]);
+  //   const pressedTexture = Object.entries(textures).find(([, v]) => v);
+  //   if (pressedTexture) {
+  //     const index = Number(pressedTexture[0].split('')[6]);
+  //     setActive(index);
+  //     setTexture(active.texture);
+  //   }
 
+  //   if (!active || pressedTexture) setActive(0);
+  // }, [keys]);
+
+  // console.log(hotbar);
   // return visible ? (
   //   <div className="centered absolute  text-3xl">
   //     <div className="-translate-y-10 text-center text-white">{activeTexture}</div>

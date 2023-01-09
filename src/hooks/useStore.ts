@@ -4,7 +4,8 @@ import { nanoid } from 'nanoid';
 import { Texture, Triplet } from '../components/Cube';
 import { World } from '../components/WorldGenerator';
 
-export type CubeMap = { key: string; pos: Triplet; texture: Texture }[];
+export type CubeType = { key: string; pos: Triplet; texture: Texture };
+export type CubeMap = CubeType[];
 
 export const useStore = create((set) => ({
   texture: 'dirt' as Texture,
