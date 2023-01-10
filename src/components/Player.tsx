@@ -8,7 +8,7 @@ import { useKeyboard } from '../hooks/useKeyboard';
 // eslint-disable-next-line import/named
 import { CylinderCollider, RigidBody, RigidBodyApi, useRapier } from '@react-three/rapier';
 
-const JUMP_FORCE = 3;
+const JUMP_FORCE = 5;
 const SPEED = 4;
 
 let velocity: Vector3 | undefined;

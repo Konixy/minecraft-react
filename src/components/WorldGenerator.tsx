@@ -12,6 +12,10 @@ import { CubeMap } from '../hooks/useStore';
 import { nanoid } from 'nanoid';
 import { Texture, Triplet } from './Cube';
 
+const height = 10;
+const width = 10;
+const yFactor = 10;
+
 const seed1 = Math.random();
 const seed2 = Math.random();
 const genE = createNoise2D(alea(seed1));
@@ -30,9 +34,6 @@ type Points = {
   x: number;
   y: number;
 }[];
-
-const height = 10;
-const width = 10;
 
 export function genPoints(): Points {
   const result: Points = [];
@@ -58,6 +59,7 @@ export function genPoints(): Points {
         0.5 * noiseM(32 * nx, 32 * ny);
       m = m / (1.0 + 0.75 + 0.33 + 0.33 + 0.33 + 0.5);
       result.push({ e, m, x, y });
+      // use addCube() to see real time world generation
     }
   }
   return result;
@@ -78,22 +80,31 @@ function addTrees(points: Points) {
   return p.fill();
 }
 
-export function World(): CubeMap {
+export function GenWorld(): CubeMap {
   const points = genPoints();
-  const trees = addTrees(points);
+  const treesPoints = addTrees(points);
   const texture = 'grass' as Texture;
+  const trees: CubeMap = [];
 
-  const yFactor = 10;
+  treesPoints.map((e) => {
+    const x = Math.round(e[0]),
+      z = Math.round(e[1]);
+    // console.log(points.filter((p) => p.x === x && p.y === z));
+    const point = points.filter((p) => p.x === x && p.y === z);
+
+    if (point[0]) {
+      const y = Math.round(point[0].e * yFactor);
+      trees.push({
+        key: nanoid(),
+        pos: [x, y + 1, z] as Triplet,
+        texture: 'log',
+      });
+    }
+  });
 
   return points
     .map((e) => ({ key: nanoid(), pos: [e.x, Math.round(e.e * yFactor), e.y] as Triplet, texture }))
-    .concat(
-      trees.map((e) => ({
-        key: nanoid(),
-        pos: [e[0], Math.round(e[1] * yFactor) + 1, e[2]] as Triplet,
-        texture: 'log',
-      })),
-    );
+    .concat(trees);
 }
 
 export function biome(e: number) {

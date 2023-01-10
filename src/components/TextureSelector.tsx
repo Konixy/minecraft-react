@@ -32,26 +32,23 @@ function HotbarItem({ selected, textureName }: { selected: boolean; textureName:
 }
 
 export const TextureSelector = () => {
-  const [activeTexture, setTexture] = useStore<[Texture | null, (texture: Texture | null) => void]>((state) => [
-    state.texture,
-    state.setTexture,
-  ]);
+  const [activeTexture, setTexture] = useStore((state) => [state.texture, state.setTexture]);
   const keys = useKeyboard();
   const { active, setActive, hotbar } = useHotbar();
   // console.log(active);
 
-  // useEffect(() => {
-  //   const textures = { keys };
+  useEffect(() => {
+    const textures = { keys };
 
-  //   const pressedTexture = Object.entries(textures).find(([, v]) => v);
-  //   if (pressedTexture) {
-  //     const index = Number(pressedTexture[0].split('')[6]);
-  //     setActive(index);
-  //     setTexture(active.texture);
-  //   }
+    const pressedTexture = Object.entries(textures).find(([, v]) => v);
+    if (pressedTexture) {
+      const index = Number(pressedTexture[0].split('')[6]);
+      setActive(index);
+      setTexture(active.texture);
+    }
 
-  //   if (!active || pressedTexture) setActive(0);
-  // }, [keys]);
+    if (!active || pressedTexture) setActive(0);
+  }, [keys]);
 
   // console.log(hotbar);
   // return visible ? (
