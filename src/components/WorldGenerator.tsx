@@ -12,12 +12,13 @@ import { CubeMap } from '../hooks/useStore';
 import { nanoid } from 'nanoid';
 import { Texture, Triplet } from './Cube';
 
-const height = 10;
-const width = 10;
+const height = 20;
+const width = 20;
 const yFactor = 10;
 
 const seed1 = Math.random();
 const seed2 = Math.random();
+console.log('Seed 1: %s, Seed 2: %d', seed1, seed2);
 const genE = createNoise2D(alea(seed1));
 const genM = createNoise2D(alea(seed2));
 
@@ -94,11 +95,7 @@ export function GenWorld(): CubeMap {
 
     if (point[0]) {
       const y = Math.round(point[0].e * yFactor);
-      trees.push({
-        key: nanoid(),
-        pos: [x, y + 1, z] as Triplet,
-        texture: 'log',
-      });
+      tree(x, y + 1, z).forEach((e) => trees.push(e));
     }
   });
 
@@ -115,4 +112,32 @@ export function biome(e: number) {
   else if (e < 0.7) return 'SAVANNAH';
   else if (e < 0.9) return 'DESERT';
   else return 'SNOW';
+}
+
+export const treeLeavesMap = [
+  { x: 1, y: 2, z: 0 },
+  { x: 0, y: 2, z: 1 },
+  { x: 1, y: 2, z: 1 },
+  { x: -1, y: 2, z: 0 },
+  { x: 0, y: 2, z: -1 },
+  { x: -1, y: 2, z: -1 },
+  { x: 1, y: 2, z: -1 },
+  { x: -1, y: 2, z: 1 },
+  { x: 0, y: 3, z: 0 },
+  { x: -1, y: 3, z: 0 },
+  { x: 1, y: 3, z: 0 },
+  { x: 0, y: 3, z: -1 },
+  { x: 0, y: 3, z: 1 },
+];
+
+export function tree(x: number, y: number, z: number): CubeMap {
+  return [0, 1, 2]
+    .map((e) => ({ key: nanoid(), pos: [x, y + e, z] as Triplet, texture: 'log' as Texture }))
+    .concat(
+      treeLeavesMap.map((e) => ({
+        key: nanoid(),
+        pos: [x + e.x, y + e.y, z + e.z] as Triplet,
+        texture: 'leaves' as Texture,
+      })),
+    );
 }

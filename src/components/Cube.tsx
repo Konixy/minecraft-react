@@ -8,7 +8,7 @@ import { RigidBody, RigidBodyApi } from '@react-three/rapier';
 import { MeshStandardMaterial } from 'three';
 
 export type Triplet = [x: number, y: number, z: number];
-export type Texture = 'dirt' | 'grass' | 'glass' | 'wood' | 'log';
+export type Texture = 'dirt' | 'grass' | 'grassSide' | 'glass' | 'wood' | 'log' | 'logTop' | 'leaves';
 export type TextureName = `${Texture}Texture`;
 export type Direction = 'right' | 'left' | 'bottom' | 'top' | 'back' | 'front';
 
@@ -20,12 +20,38 @@ export const Cube = ({ position, texture }: { position: Triplet; texture: Textur
   const [addCube, removeCube, cubes] = useStore((state) => [state.addCube, state.removeCube, state.cubes]);
 
   const textureMap = [
-    directions.includes('right') ? null : activeTexture,
-    directions.includes('left') ? null : activeTexture,
-    directions.includes('top') ? null : activeTexture,
-    directions.includes('bottom') ? null : activeTexture,
-    directions.includes('front') ? null : activeTexture,
-    directions.includes('back') ? null : activeTexture,
+    directions.includes('right')
+      ? null
+      : texture === 'grass'
+      ? textures[(texture + 'SideTexture') as TextureName]
+      : activeTexture,
+    directions.includes('left')
+      ? null
+      : texture === 'grass'
+      ? textures[(texture + 'SideTexture') as TextureName]
+      : activeTexture,
+    directions.includes('top')
+      ? null
+      : texture === 'log'
+      ? textures[(texture + 'TopTexture') as TextureName]
+      : activeTexture,
+    directions.includes('bottom')
+      ? null
+      : texture === 'log'
+      ? textures[(texture + 'TopTexture') as TextureName]
+      : texture === 'grass'
+      ? textures['dirtTexture' as TextureName]
+      : activeTexture,
+    directions.includes('front')
+      ? null
+      : texture === 'grass'
+      ? textures[(texture + 'SideTexture') as TextureName]
+      : activeTexture,
+    directions.includes('back')
+      ? null
+      : texture === 'grass'
+      ? textures[(texture + 'SideTexture') as TextureName]
+      : activeTexture,
   ];
 
   useEffect(() => {
@@ -63,14 +89,15 @@ export const Cube = ({ position, texture }: { position: Triplet; texture: Textur
 
   function getVoxel(x: number, y: number, z: number) {
     const cube = cubes.filter((cube: CubeType) => cube.pos[0] === x && cube.pos[1] === y && cube.pos[2] === z)[0];
-    if (cube) return true;
-    else return false;
+    if (cube) return cube;
+    else return null;
   }
 
   function adjustFaces() {
     for (const face of faces) {
       const neighbour = getVoxel(position[0] + face.dir[0], position[1] + face.dir[1], position[2] + face.dir[2]);
       if (neighbour) {
+        if (neighbour.texture === 'glass' || neighbour.texture === 'leaves') return;
         switch (face.name) {
           case 'left':
             setDirections([...directions, 'left']);

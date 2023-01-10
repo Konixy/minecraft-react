@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+// eslint-disable-next-line import/named
 import create, { SetState } from 'zustand';
 import { nanoid } from 'nanoid';
 import { Texture, Triplet } from '../components/Cube';
@@ -19,7 +20,7 @@ type Store = {
 };
 
 export const useStore = create((set: SetState<Store>) => ({
-  texture: 'dirt' as Texture,
+  texture: 'dirt' as Texture | null,
   cubes: GenWorld(),
   addCube: (x: number, y: number, z: number) => {
     set((prev) => {
