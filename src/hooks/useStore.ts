@@ -44,11 +44,17 @@ export const useStore = create((set: SetState<Store>) => ({
     set((prev) => {
       const cube = prev.cubes.filter((cube: { pos: [number, number, number] }) => {
         const [X, Y, Z] = cube.pos;
-        return X === x || Y === y || Z === z;
+        return X === x && Y === y && Z === z;
       })[0];
       if (cube) {
         const audio: Tracks | null =
-          cube.texture === 'grass' || cube.texture === 'leaves' ? 'grass' : cube.texture === 'dirt' ? 'gravel' : null;
+          cube.texture === 'grass' || cube.texture === 'leaves'
+            ? 'grass'
+            : cube.texture === 'dirt'
+            ? 'gravel'
+            : cube.texture === 'log'
+            ? 'wood'
+            : null;
         audio ? AudioPlayer(audio) : undefined;
       }
       return {
