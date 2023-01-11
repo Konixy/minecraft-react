@@ -21,8 +21,8 @@ export default function useHotbar(): {
   setItem: (index: number, texture: Texture) => void;
 } {
   const [hotbar, setHotbar] = useState<Hotbar>([
-    { texture: 'dirt', current: true },
-    { texture: 'grass', current: false },
+    { texture: 'dirt', current: false },
+    { texture: 'grass', current: true },
     { texture: 'glass', current: false },
     { texture: 'wood', current: false },
     { texture: 'log', current: false },

@@ -4,6 +4,7 @@ import create, { SetState } from 'zustand';
 import { nanoid } from 'nanoid';
 import { Texture, Triplet } from '../components/Cube';
 import { GenWorld } from '../components/WorldGenerator';
+import AudioPlayer, { Tracks } from '../components/AudioPlayer';
 
 export type CubeType = { key: string; pos: Triplet; texture: Texture };
 export type CubeMap = CubeType[];
@@ -20,12 +21,15 @@ type Store = {
 };
 
 export const useStore = create((set: SetState<Store>) => ({
-  texture: 'dirt' as Texture | null,
+  texture: 'grass' as Texture | null,
   cubes: GenWorld(),
   addCube: (x: number, y: number, z: number) => {
     set((prev) => {
       if (!prev.texture) return prev;
-      else return { cubes: [...prev.cubes, { key: nanoid(), pos: [x, y, z], texture: prev.texture }] };
+      const audio: Tracks | null =
+        prev.texture === 'grass' || prev.texture === 'leaves' ? 'grass' : prev.texture === 'dirt' ? 'gravel' : null;
+      audio ? AudioPlayer(audio) : undefined;
+      return { cubes: [...prev.cubes, { key: nanoid(), pos: [x, y, z], texture: prev.texture }] };
     });
   },
   addCubes: (cubes: { x: number; y: number; z: number }[], texture: Texture) => {
@@ -37,12 +41,23 @@ export const useStore = create((set: SetState<Store>) => ({
     }));
   },
   removeCube: (x: number, y: number, z: number) => {
-    set((prev) => ({
-      cubes: prev.cubes.filter((cube: { pos: [number, number, number] }) => {
+    set((prev) => {
+      const cube = prev.cubes.filter((cube: { pos: [number, number, number] }) => {
         const [X, Y, Z] = cube.pos;
-        return X != x || Y != y || Z != z;
-      }),
-    }));
+        return X === x || Y === y || Z === z;
+      })[0];
+      if (cube) {
+        const audio: Tracks | null =
+          cube.texture === 'grass' || cube.texture === 'leaves' ? 'grass' : cube.texture === 'dirt' ? 'gravel' : null;
+        audio ? AudioPlayer(audio) : undefined;
+      }
+      return {
+        cubes: prev.cubes.filter((cube: { pos: [number, number, number] }) => {
+          const [X, Y, Z] = cube.pos;
+          return X != x || Y != y || Z != z;
+        }),
+      };
+    });
   },
   setTexture: (texture: Texture | null) => {
     set(() => ({ texture }));
