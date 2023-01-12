@@ -12,6 +12,7 @@ import { Menu } from './components/Menu';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import FPSStats from 'react-fps-stats';
+import { loadSounds } from './components/AudioPlayer';
 
 function FPV({
   isLocked,
@@ -52,6 +53,9 @@ function FPV({
 const app = () => {
   const isLocked = useRef(false);
   const [isMenuDisplayed, setIsMenuDisplayed] = useState(true);
+  useEffect(() => {
+    loadSounds();
+  }, []);
   return (
     <>
       <Canvas shadows onKeyDown={(e) => e.preventDefault()}>

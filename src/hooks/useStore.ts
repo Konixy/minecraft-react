@@ -28,7 +28,7 @@ export const useStore = create((set: SetState<Store>) => ({
       if (!prev.texture) return prev;
       const audio: Tracks | null =
         prev.texture === 'grass' || prev.texture === 'leaves' ? 'grass' : prev.texture === 'dirt' ? 'gravel' : null;
-      audio ? AudioPlayer(audio) : undefined;
+      audio ? new AudioPlayer(audio).play() : undefined;
       return { cubes: [...prev.cubes, { key: nanoid(), pos: [x, y, z], texture: prev.texture }] };
     });
   },
@@ -55,7 +55,7 @@ export const useStore = create((set: SetState<Store>) => ({
             : cube.texture === 'log'
             ? 'wood'
             : null;
-        audio ? AudioPlayer(audio) : undefined;
+        audio ? new AudioPlayer(audio).play() : undefined;
       }
       return {
         cubes: prev.cubes.filter((cube: { pos: [number, number, number] }) => {

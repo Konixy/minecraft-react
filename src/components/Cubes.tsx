@@ -14,7 +14,11 @@ export const Cubes = () => {
     }
   }, [cubes]);
 
-  return cubes.map(({ key, pos, texture }: { key: string; pos: Triplet; texture: Texture }) => {
-    return <Cube key={key} position={pos} texture={texture} />;
-  });
+  return (
+    <>
+      {cubes.map(({ key, pos, texture }: { key: string; pos: Triplet; texture: Texture }) => {
+        return <Cube key={key} position={pos} texture={texture} />;
+      })}
+    </>
+  );
 };
