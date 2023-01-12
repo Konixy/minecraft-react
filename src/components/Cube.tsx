@@ -127,14 +127,15 @@ export const Cube = ({ position, texture }: { position: Triplet; texture: Textur
       <mesh
         castShadow
         material={[
-          ...textureMap.map(
-            (e) =>
-              new MeshStandardMaterial({
-                map: e,
-                transparent: true,
-                opacity: texture === 'glass' ? 0.8 : 1,
-                color: hovered ? 'gray' : 'white',
-              }),
+          ...textureMap.map((e) =>
+            e
+              ? new MeshStandardMaterial({
+                  map: e,
+                  transparent: true,
+                  opacity: texture === 'glass' ? 0.8 : 1,
+                  color: hovered ? 'gray' : 'white',
+                })
+              : new MeshStandardMaterial(),
           ),
         ]}
         receiveShadow
@@ -146,7 +147,8 @@ export const Cube = ({ position, texture }: { position: Triplet; texture: Textur
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               const [x, y, z]: Triplet = ref.current?.translation();
-              if (e.nativeEvent.altKey) removeCube(x, y, z);
+
+              if (e.which !== 3) removeCube(x, y, z);
               // else if (position) {
               //   if (
               //     !(

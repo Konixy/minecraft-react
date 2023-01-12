@@ -32,7 +32,7 @@ function HotbarItem({ selected, textureName }: { selected: boolean; textureName:
 }
 
 export const TextureSelector = () => {
-  const [activeTexture, setTexture] = useStore((state) => [state.texture, state.setTexture]);
+  const [setTexture] = useStore((state) => [state.setTexture]);
   const keys = useKeyboard();
   const { active, setActive, hotbar } = useHotbar();
   // console.log(active);
@@ -50,14 +50,6 @@ export const TextureSelector = () => {
     if (!active || pressedTexture) setActive(0);
   }, [keys]);
 
-  // console.log(hotbar);
-  // return visible ? (
-  //   <div className="centered absolute  text-3xl">
-  //     <div className="-translate-y-10 text-center text-white">{activeTexture}</div>
-  //   </div>
-  // ) : (
-  //   <></>
-  // );
   return (
     <div className="absolute right-[50%] bottom-0 z-30 mb-10 translate-x-[50%]">
       <div
