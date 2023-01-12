@@ -58,7 +58,8 @@ const app = () => {
   }, []);
   return (
     <>
-      <Canvas shadows onKeyDown={(e) => e.preventDefault()}>
+      <Canvas onKeyDown={(e) => e.preventDefault()}>
+        {/* shadows */}
         <App isLocked={isLocked} setIsMenuDisplayed={setIsMenuDisplayed} />;
       </Canvas>
       <TextureSelector />

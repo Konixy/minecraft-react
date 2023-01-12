@@ -125,7 +125,7 @@ export const Cube = ({ position, texture }: { position: Triplet; texture: Textur
   return (
     <RigidBody type="fixed" ref={ref as React.MutableRefObject<RigidBodyApi>} position={position}>
       <mesh
-        castShadow
+        // castShadow
         material={[
           ...textureMap.map((e) =>
             e
@@ -138,7 +138,7 @@ export const Cube = ({ position, texture }: { position: Triplet; texture: Textur
               : new MeshStandardMaterial(),
           ),
         ]}
-        receiveShadow
+        // receiveShadow
         onClick={(e) => {
           e.stopPropagation();
           if (e.faceIndex) {

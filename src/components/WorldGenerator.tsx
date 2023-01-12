@@ -14,7 +14,7 @@ import { Texture, Triplet } from './Cube';
 
 const height = 10;
 const width = 10;
-const yFactor = 10;
+const yFactor = 8;
 
 const seed1 = Math.random();
 const seed2 = Math.random();
