@@ -31,5 +31,6 @@ jobs:
     environment: production
     concurrency: production
     steps:
+      - uses: actions/checkout@v3
       - name: deploy
       - run: npm run serve --if-present
