@@ -31,10 +31,15 @@ jobs:
     environment: production
     concurrency: production
     steps:
-      - uses: actions/checkout@v3
-      - name: deploy
-        uses: actions/setup-node@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm i --legacy-peer-deps --force
-      - run: npm run serve --if-present
+          # Upload entire repository
+          path: './dist'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
