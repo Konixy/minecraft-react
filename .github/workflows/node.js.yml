@@ -7,7 +7,6 @@ permissions:
   contents: read
   pages: write
   id-token: write
-  repo
 
 on:
   push:
