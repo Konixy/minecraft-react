@@ -3,13 +3,13 @@
 import alea from 'alea';
 import { createNoise2D } from 'simplex-noise';
 import PoissonDiskSampling from 'poisson-disk-sampling';
-import { CubeMap } from '../hooks/useStore';
+import type { CubeMap } from '../hooks/useStore';
 import { nanoid } from 'nanoid';
-import { Texture, Triplet } from './Cube';
+import type { Texture, Triplet } from './Cube';
 import { tree } from './blockMaps/tree';
 
-const height = 40;
-const width = 40;
+const height = 20;
+const width = 20;
 const yFactor = 10; // 8
 
 const seed1 = Math.random();
