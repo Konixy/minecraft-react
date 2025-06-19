@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 // eslint-disable-next-line import/named
-import create, { SetState } from 'zustand';
+import { SetState, create } from 'zustand';
 import { nanoid } from 'nanoid';
 import { Texture, Triplet } from '../components/Cube';
 import { GenWorld } from '../components/WorldGenerator';

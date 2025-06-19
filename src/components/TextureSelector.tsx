@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useStore } from '../hooks/useStore';
-import { useKeyboard } from '../hooks/useKeyboard';
+// import { useKeyboard } from '../hooks/useKeyboard';
 import * as textures from '../images/images';
 import { Texture } from './Cube';
 import useHotbar from '../hooks/useHotbar';
+import { useKeyboard } from '../hooks/useKeyboard';
 
 export const images = {
   dirt: textures.dirtImg,
@@ -16,12 +17,12 @@ export const images = {
 function HotbarItem({ selected, textureName }: { selected: boolean; textureName: Texture | null }) {
   return (
     <div
-      className="mr-[13.1px] h-[35px] w-[35px] bg-cover rendering-pixelated last:mr-0"
+      className="hotbar-item"
       style={textureName ? { backgroundImage: `url("src/images/textures/items/${textureName}.item.png")` } : {}}
     >
       {selected ? (
         <div
-          className="absolute ml-[-12px] mt-[-12px] h-[58px] w-[58px] bg-cover"
+          className="hotbar-item-selected"
           style={{ backgroundImage: `url("src/images/hotbar_selected.png")` }}
         ></div>
       ) : (
@@ -31,11 +32,10 @@ function HotbarItem({ selected, textureName }: { selected: boolean; textureName:
   );
 }
 
-export const TextureSelector = () => {
+export default function TextureSelector({ displayHotbar }: { displayHotbar: boolean }) {
   const [setTexture] = useStore((state) => [state.setTexture]);
   const keys = useKeyboard();
   const { active, setActive, hotbar } = useHotbar();
-  // console.log(active);
 
   useEffect(() => {
     const textures = { keys };
@@ -51,15 +51,12 @@ export const TextureSelector = () => {
   }, [keys]);
 
   return (
-    <div className="absolute right-[50%] bottom-0 z-30 mb-10 translate-x-[50%]">
-      <div
-        className="flex h-[52.8px] w-[440px] flex-row items-center justify-center bg-cover bg-no-repeat rendering-pixelated"
-        style={{ backgroundImage: `url("src/images/hotbar.png")` }}
-      >
+    <div className="hotbar-container" style={{ display: displayHotbar ? 'block' : 'none' }}>
+      <div className="hotbar" style={{ backgroundImage: `url("src/images/hotbar.png")` }}>
         {hotbar.map((e, index) => (
           <HotbarItem key={index} selected={e.current} textureName={e.texture} />
         ))}
       </div>
     </div>
   );
-};
+}

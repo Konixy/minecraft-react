@@ -125,7 +125,7 @@ export const Cube = ({ position, texture }: { position: Triplet; texture: Textur
   return (
     <RigidBody type="fixed" ref={ref as React.MutableRefObject<RigidBodyApi>} position={position}>
       <mesh
-        // castShadow
+        castShadow
         material={[
           ...textureMap.map((e) =>
             e
@@ -138,46 +138,33 @@ export const Cube = ({ position, texture }: { position: Triplet; texture: Textur
               : new MeshStandardMaterial(),
           ),
         ]}
-        // receiveShadow
+        receiveShadow
         onClick={(e) => {
           e.stopPropagation();
           if (e.faceIndex) {
             const clickedFace = Math.floor(e.faceIndex / 2);
             if (ref.current?.translation()) {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              const [x, y, z]: Triplet = ref.current?.translation();
+              const { x, y, z } = ref.current?.translation();
 
-              if (e.which !== 3) removeCube(x, y, z);
-              // else if (position) {
-              //   if (
-              //     !(
-              //       Math.floor(position[0]) === x &&
-              //       Math.floor(position[2]) === z &&
-              //       (Math.floor(position[2]) === y || Math.floor(position[2]) + 1)
-              //     )
-              //   ) {
+              if (e.button !== 2) removeCube(x, y, z);
               else if (clickedFace === 0) return addCube(x + 1, y, z);
               else if (clickedFace === 1) return addCube(x - 1, y, z);
               else if (clickedFace === 2) return addCube(x, y + 1, z);
               else if (clickedFace === 3) return addCube(x, y - 1, z);
               else if (clickedFace === 4) return addCube(x, y, z + 1);
               else if (clickedFace === 5) return addCube(x, y, z - 1);
-              //   }
-              // }
             }
           }
         }}
         onPointerEnter={async (e) => {
           e.stopPropagation();
           setIsHovered(true);
-          // setActiveTexture(new TextureLoader().load(hoverTexture));
         }}
         onPointerLeave={() => {
           setIsHovered(false);
         }}
       >
-        <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
+        <boxGeometry attach="geometry" args={[1, 1, 1]} />
         {/* {textureMap.map((e) => (
           <meshStandardMaterial
             key={Math.random()}

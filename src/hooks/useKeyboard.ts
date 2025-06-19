@@ -55,6 +55,8 @@ export const useKeyboard = () => {
   });
 
   const handleKeyDown = useCallback((e: unknown) => {
+    console.log(e);
+    (e as KeyboardEvent).preventDefault();
     const action = actionByKey((e as KeyboardEvent).code);
     if (action) {
       setActions((prev) => {

@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useStore } from '../hooks/useStore';
 import { Cube, Texture, Triplet } from './Cube';
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import { Geometry } from 'three-stdlib';
 
 export const Cubes = () => {
   const [cubes, addCubes, removeCube] = useStore((state) => [state.cubes, state.addCubes, state.removeCube]);
@@ -13,6 +15,10 @@ export const Cubes = () => {
       }
     }
   }, [cubes]);
+
+  const cubesGeometry = cubes.map((e) => {
+    const geometry = new Geometry();
+  });
 
   return (
     <>

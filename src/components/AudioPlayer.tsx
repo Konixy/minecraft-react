@@ -14,28 +14,28 @@ export function random(max: number) {
 
 const players = {
   grass: [
-    new Audio('/src/sounds/grass1.ogg'),
-    new Audio('/src/sounds/grass2.ogg'),
-    new Audio('/src/sounds/grass3.ogg'),
-    new Audio('/src/sounds/grass4.ogg'),
+    new Audio('/src/sounds/grass/grass1.ogg'),
+    new Audio('/src/sounds/grass/grass2.ogg'),
+    new Audio('/src/sounds/grass/grass3.ogg'),
+    new Audio('/src/sounds/grass/grass4.ogg'),
   ],
   gravel: [
-    new Audio('/src/sounds/gravel1.ogg'),
-    new Audio('/src/sounds/gravel2.ogg'),
-    new Audio('/src/sounds/gravel3.ogg'),
-    new Audio('/src/sounds/gravel4.ogg'),
+    new Audio('/src/sounds/gravel/gravel1.ogg'),
+    new Audio('/src/sounds/gravel/gravel2.ogg'),
+    new Audio('/src/sounds/gravel/gravel3.ogg'),
+    new Audio('/src/sounds/gravel/gravel4.ogg'),
   ],
   stone: [
-    new Audio('/src/sounds/stone1.ogg'),
-    new Audio('/src/sounds/stone2.ogg'),
-    new Audio('/src/sounds/stone3.ogg'),
-    new Audio('/src/sounds/stone4.ogg'),
+    new Audio('/src/sounds/stone/stone1.ogg'),
+    new Audio('/src/sounds/stone/stone2.ogg'),
+    new Audio('/src/sounds/stone/stone3.ogg'),
+    new Audio('/src/sounds/stone/stone4.ogg'),
   ],
   wood: [
-    new Audio('/src/sounds/wood1.ogg'),
-    new Audio('/src/sounds/wood2.ogg'),
-    new Audio('/src/sounds/wood3.ogg'),
-    new Audio('/src/sounds/wood4.ogg'),
+    new Audio('/src/sounds/wood/wood1.ogg'),
+    new Audio('/src/sounds/wood/wood2.ogg'),
+    new Audio('/src/sounds/wood/wood3.ogg'),
+    new Audio('/src/sounds/wood/wood4.ogg'),
   ],
 };
 

@@ -1,11 +1,11 @@
 /* eslint-disable react/no-unknown-property */
-import React, { FC } from 'react';
+import React from 'react';
 import { CuboidCollider, RigidBody } from '@react-three/rapier';
 import { grassTexture } from '../images/textures';
 import { useStore } from '../hooks/useStore';
 import { RepeatWrapping } from 'three';
 
-export const Ground: FC = () => {
+export default function Ground() {
   const [addCube] = useStore((state) => [state.addCube]);
 
   grassTexture.wrapS = RepeatWrapping;
@@ -30,4 +30,4 @@ export const Ground: FC = () => {
       <CuboidCollider args={[1000, 2, 1000]} position={[0, -2, 0]} />
     </RigidBody>
   );
-};
+}

@@ -1,8 +1,3 @@
-/* eslint-disable prefer-const */
-// export function GenerateNewWorld() {
-//   return new Error('Function not implemented');
-// }
-
 // TODO: https://www.redblobgames.com/maps/terrain-from-noise/
 
 import alea from 'alea';
@@ -11,14 +6,15 @@ import PoissonDiskSampling from 'poisson-disk-sampling';
 import { CubeMap } from '../hooks/useStore';
 import { nanoid } from 'nanoid';
 import { Texture, Triplet } from './Cube';
+import { tree } from './blockMaps/tree';
 
-const height = 10;
-const width = 10;
-const yFactor = 8;
+const height = 40;
+const width = 40;
+const yFactor = 10; // 8
 
 const seed1 = Math.random();
 const seed2 = Math.random();
-console.log('Seed 1: %s, Seed 2: %d', seed1, seed2);
+// console.log('Seed 1: %s, Seed 2: %d', seed1, seed2);
 const genE = createNoise2D(alea(seed1));
 const genM = createNoise2D(alea(seed2));
 
@@ -40,7 +36,7 @@ export function genPoints(): Points {
   const result: Points = [];
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
-      let nx = x / width - 0.5,
+      const nx = x / width - 0.5,
         ny = y / height - 0.5;
       let e =
         1.0 * noiseE(1 * nx, 1 * ny) +
@@ -67,7 +63,7 @@ export function genPoints(): Points {
 }
 
 function addTrees(points: Points) {
-  let p = new PoissonDiskSampling({
+  const p = new PoissonDiskSampling({
     shape: [height, width],
     maxDistance: 10,
     minDistance: 2,
@@ -112,76 +108,4 @@ export function biome(e: number) {
   else if (e < 0.7) return 'SAVANNAH';
   else if (e < 0.9) return 'DESERT';
   else return 'SNOW';
-}
-
-export function genTreeMap() {
-  const treeLeavesMap = [
-    { x: 1, y: 3, z: 0 },
-    { x: 0, y: 3, z: 1 },
-    { x: 1, y: 3, z: 1 },
-    { x: -1, y: 3, z: 0 },
-    { x: 0, y: 3, z: -1 },
-    { x: -1, y: 3, z: -1 },
-    { x: 1, y: 3, z: -1 },
-    { x: -1, y: 3, z: 1 },
-    { x: 2, y: 3, z: 0 },
-    { x: 2, y: 3, z: 1 },
-    { x: 2, y: 3, z: -1 },
-    { x: 0, y: 3, z: 2 },
-    { x: -1, y: 3, z: 2 },
-    { x: 1, y: 3, z: 2 },
-    { x: 0, y: 3, z: -2 },
-    { x: -1, y: 3, z: -2 },
-    { x: 1, y: 3, z: -2 },
-    { x: -2, y: 3, z: 0 },
-    { x: -2, y: 3, z: 1 },
-    { x: -2, y: 3, z: -1 },
-    { x: 1, y: 4, z: 0 },
-    { x: 0, y: 4, z: 1 },
-    { x: 1, y: 4, z: 1 },
-    { x: -1, y: 4, z: 0 },
-    { x: 0, y: 4, z: -1 },
-    { x: -1, y: 4, z: -1 },
-    { x: 1, y: 4, z: -1 },
-    { x: -1, y: 4, z: 1 },
-    { x: 2, y: 4, z: 0 },
-    { x: 2, y: 4, z: 1 },
-    { x: 2, y: 4, z: -1 },
-    { x: 0, y: 4, z: 2 },
-    { x: -1, y: 4, z: 2 },
-    { x: 1, y: 4, z: 2 },
-    { x: 0, y: 4, z: -2 },
-    { x: -1, y: 4, z: -2 },
-    { x: 1, y: 4, z: -2 },
-    { x: -2, y: 4, z: 0 },
-    { x: -2, y: 4, z: 1 },
-    { x: -2, y: 4, z: -1 },
-    { x: 0, y: 5, z: 0 },
-    { x: 1, y: 5, z: 0 },
-    { x: 0, y: 5, z: 1 },
-    { x: 1, y: 5, z: 1 },
-    { x: -1, y: 5, z: 0 },
-    { x: 0, y: 5, z: -1 },
-    { x: -1, y: 5, z: -1 },
-    { x: 1, y: 5, z: -1 },
-    { x: -1, y: 5, z: 1 },
-    { x: 0, y: 6, z: 0 },
-    { x: -1, y: 6, z: 0 },
-    { x: 1, y: 6, z: 0 },
-    { x: 0, y: 6, z: -1 },
-    { x: 0, y: 6, z: 1 },
-  ];
-  return treeLeavesMap;
-}
-
-export function tree(x: number, y: number, z: number): CubeMap {
-  return [0, 1, 2, 3, 4]
-    .map((e) => ({ key: nanoid(), pos: [x, y + e, z] as Triplet, texture: 'log' as Texture }))
-    .concat(
-      genTreeMap().map((e) => ({
-        key: nanoid(),
-        pos: [x + e.x, y + e.y, z + e.z] as Triplet,
-        texture: 'leaves' as Texture,
-      })),
-    );
 }

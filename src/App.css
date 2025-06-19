@@ -1,0 +1,126 @@
+body {
+  margin: 0;
+}
+
+.cursor {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  color: #ffffff;
+  cursor: default;
+  user-select: none;
+  z-index: 999;
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.menu-content {
+  --btn-size: 30pt;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.menu-button {
+  height: var(--btn-size);
+  width: calc(var(--btn-size) * 10);
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  user-select: none;
+  padding: 0;
+  padding-bottom: 0.3em;
+
+  color: white;
+  font-family: 'Minecraft';
+  font-size: 12pt;
+  background: #999 url('/src/images/button.png') center / cover;
+  image-rendering: pixelated;
+  border: 2px solid #000;
+}
+
+.menu-button:hover .menu-button-title {
+  background-color: rgba(100, 100, 255, 0.45);
+  text-shadow: 2px 2px #202013cc;
+  color: #ffffa0;
+}
+
+.menu-button:active .menu-button-title {
+  box-shadow:
+    inset -2px -4px #0004,
+    inset 2px 2px #fff5;
+}
+
+.menu-button .menu-button-title {
+  width: 100%;
+  height: 100%;
+  padding-bottom: 0.3em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: #ddd;
+  text-shadow: 2px 2px #000a;
+  box-shadow:
+    inset -2px -4px #0006,
+    inset 2px 2px #fff7;
+}
+
+.hotbar-container {
+  position: absolute;
+  bottom: 0;
+  right: 50%;
+  z-index: 9999;
+  margin-bottom: 40px;
+  transform: translateX(50%);
+}
+
+.hotbar {
+  /* rendering-pixelated flex h-[52.8px] w-[440px] flex-row items-center justify-center bg-cover bg-no-repeat */
+  image-rendering: pixelated;
+  display: flex;
+  height: 52.8px;
+  width: 440px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.hotbar-item {
+  /* rendering-pixelated mr-[13.1px] h-[35px] w-[35px] bg-cover last:mr-0 */
+  image-rendering: pixelated;
+  margin-right: 13.1px;
+  height: 35px;
+  width: 35px;
+  background-size: cover;
+}
+
+.hotbar-item:last-child {
+  margin-right: 0;
+}
+
+.hotbar-item-selected {
+  /* absolute ml-[-12px] mt-[-12px] h-[58px] w-[58px] bg-cover */
+  position: absolute;
+  margin-left: -12px;
+  margin-top: -12px;
+  height: 58px;
+  width: 58px;
+  background-size: cover;
+}
