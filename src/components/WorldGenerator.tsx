@@ -84,13 +84,14 @@ export function GenWorld(): CubeMap {
   const trees: CubeMap = [];
 
   treesPoints.map((e) => {
-    const x = Math.round(e[0]),
-      z = Math.round(e[1]);
+    const x = Math.round(e[0]);
+    const z = Math.round(e[1]);
     // console.log(points.filter((p) => p.x === x && p.y === z));
     const point = points.filter((p) => p.x === x && p.y === z);
 
     if (point[0]) {
       const y = Math.round(point[0].e * yFactor);
+      for 
       tree(x, y + 1, z).forEach((e) => trees.push(e));
     }
   });
@@ -102,10 +103,10 @@ export function GenWorld(): CubeMap {
 
 export function biome(e: number) {
   if (e < 0.1) return 'WATER';
-  else if (e < 0.2) return 'BEACH';
-  else if (e < 0.3) return 'FOREST';
-  else if (e < 0.5) return 'JUNGLE';
-  else if (e < 0.7) return 'SAVANNAH';
-  else if (e < 0.9) return 'DESERT';
-  else return 'SNOW';
+  if (e < 0.2) return 'BEACH';
+  if (e < 0.3) return 'FOREST';
+  if (e < 0.5) return 'JUNGLE';
+  if (e < 0.7) return 'SAVANNAH';
+  if (e < 0.9) return 'DESERT';
+  return 'SNOW';
 }
